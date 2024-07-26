@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import './login.css';
+import './signup.css';
 
-function Login() {
+function Signup() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle login logic here
     console.log('Username:', username);
     console.log('Password:', password);
+    console.log('Email:', email);
   };
 
   return (
-    <div className="login-container">
+    <div className="signup-container">
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Username:</label>
@@ -26,6 +26,15 @@ function Login() {
           />
         </div>
         <div>
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div>
           <label htmlFor="password">Password:</label>
           <input
             type="password"
@@ -34,13 +43,10 @@ function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button type="submit">Login</button>
+        <button type="submit">Sign Up</button>
       </form>
-      <p>
-        Don't have an account? <Link to="/signup">Sign Up</Link>
-      </p>
     </div>
   );
 }
 
-export default Login;
+export default Signup;
