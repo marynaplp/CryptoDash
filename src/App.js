@@ -33,4 +33,3 @@ function ProtectedRoute({ children }) {
 }
 
 export default App;
-
