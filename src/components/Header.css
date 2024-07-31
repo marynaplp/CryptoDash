@@ -1,6 +1,22 @@
 .App-header {
-    background-color: #282c34;
-    padding: 20px;
-    color: white;
-    text-align: center;
-  }
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
+  text-align: center;
+}
+
+.nav-bar {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.nav-bar a {
+  color: white;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+.nav-bar a:hover {
+  text-decoration: underline;
+}

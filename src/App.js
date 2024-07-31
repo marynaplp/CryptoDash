@@ -1,6 +1,7 @@
 // File: src/App.js
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, AuthContext } from './context/AuthContext';
 import Header from './components/Header';
 import CryptoList from './components/CryptoList';
 import Login from './components/Login';
@@ -9,21 +10,27 @@ import Profile from './components/Profile';
 import './App.css';
 
 function App() {
-  const [user, setUser] = useState(null);
-
   return (
-    <Router>
-      <div className="App">
-        <Header />
-        <Routes>
-          <Route path="/" element={<CryptoList />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup setUser={setUser} />} />
-          <Route path="/profile" element={<Profile user={user} />} />
-        </Routes>
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <div className="App">
+          <Header />
+          <Routes>
+            <Route path="/" element={<CryptoList />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          </Routes>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 
+function ProtectedRoute({ children }) {
+  const { user } = useContext(AuthContext);
+  return user ? children : <Navigate to="/login" />;
+}
+
 export default App;
+

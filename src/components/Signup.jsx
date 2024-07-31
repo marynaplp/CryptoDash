@@ -1,19 +1,21 @@
 // File: src/components/Signup.js
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 import './signup.css';
 
-function Signup({ setUser }) {
+function Signup() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle signup logic here
     const newUser = { username, email, password };
-    setUser(newUser); // Save user data
+    login(newUser); // Save user data
     navigate('/profile'); // Redirect to profile page
   };
 

@@ -1,16 +1,21 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+// File: src/components/Login.js
+import React, { useState, useContext } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 import './login.css';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log('Username:', username);
-    console.log('Password:', password);
+    // Handle login logic here (e.g., authenticate with a backend)
+    const userData = { username, email: `${username}@example.com`, password }; // Adding email for testing
+    login(userData);
+    navigate('/profile');
   };
 
   return (
