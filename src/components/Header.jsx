@@ -1,14 +1,18 @@
 // File: src/components/Header.js
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import useOutsideClick from '../hooks/useOutsideClick';
 import './Header.css';
 
 function Header() {
   const { user, logout } = useContext(AuthContext);
   const [dropdownVisible, setDropdownVisible] = useState(false);
+  const dropdownRef = useRef(null);
 
-  const handleDropdownToggle = () => {
+  useOutsideClick(dropdownRef, () => setDropdownVisible(false));
+
+  const handleAvatarClick = () => {
     setDropdownVisible(!dropdownVisible);
   };
 
@@ -19,30 +23,30 @@ function Header() {
 
   return (
     <header className="header">
-      <nav>
-        <ul>
-          <li><Link to="/">Home</Link></li>
-          {user ? (
-            <>
-              <li><Link to="/profile">Profile</Link></li>
-              <li className="user-avatar" onMouseEnter={handleDropdownToggle} onMouseLeave={handleDropdownToggle}>
-                <div className="avatar-circle">{user.username[0]}</div>
-                {dropdownVisible && (
-                  <div className="dropdown-menu">
-                    <Link to="/profile">Profile</Link>
-                    <button onClick={handleLogout}>Logout</button>
-                  </div>
-                )}
-              </li>
-            </>
-          ) : (
-            <>
-              <li><Link to="/login">Login</Link></li>
-              <li><Link to="/signup">Signup</Link></li>
-            </>
-          )}
-        </ul>
-      </nav>
+      <div className="nav-left">
+        <Link to="/">Home</Link>
+      </div>
+      <div className="nav-right">
+        {user ? (
+          <>
+            <Link to="/profile">Profile</Link>
+            <div className="user-avatar" onClick={handleAvatarClick}>
+              <div className="avatar-circle">{user.username[0]}</div>
+              {dropdownVisible && (
+                <div ref={dropdownRef} className="dropdown-menu">
+                  <Link to="/profile">Profile</Link>
+                  <button onClick={handleLogout}>Logout</button>
+                </div>
+              )}
+            </div>
+          </>
+        ) : (
+          <>
+            <Link to="/login">Login</Link>
+            <Link to="/signup">Signup</Link>
+          </>
+        )}
+      </div>
     </header>
   );
 }
