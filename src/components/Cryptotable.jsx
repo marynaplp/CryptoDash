@@ -17,7 +17,7 @@ function CryptoTable() {
 
   const handleFavorite = (crypto) => {
     const updatedFavorites = user.favorites.includes(crypto.id)
-      ? user.favorites.filter(fav => fav !== crypto.id)
+      ? user.ffavorites.filter(fav => fav !== crypto.id)
       : [...user.favorites, crypto.id];
 
     setUser({ ...user, favorites: updatedFavorites });
@@ -34,7 +34,6 @@ function CryptoTable() {
             <th>Change</th>
             <th>Market Cap</th>
             <th>Chart</th>
-            <th>Trade</th>
             <th>Favorite</th>
           </tr>
         </thead>
@@ -48,7 +47,6 @@ function CryptoTable() {
               </td>
               <td>${crypto.market_cap.toLocaleString()}</td>
               <td><img src={crypto.image} alt={crypto.name} width="20" /></td>
-              <td><button>Trade</button></td>
               <td>
                 <button onClick={() => handleFavorite(crypto)}>
                   {user.favorites.includes(crypto.id) ? '★' : '☆'}
@@ -63,3 +61,4 @@ function CryptoTable() {
 }
 
 export default CryptoTable;
+
