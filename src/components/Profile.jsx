@@ -1,26 +1,14 @@
 import React, { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import './profile.css';
+import CryptoTable from './Cryptotable';
 
 function Profile() {
-  const { user, logout } = useContext(AuthContext);
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
-
-  if (!user) {
-    return <div>Loading...</div>;
-  }
+  const { user } = useContext(AuthContext);
 
   return (
-    <div className="profile-container">
+    <div>
       <h1>Welcome, {user.username}</h1>
-      <p>Email: {user.email}</p>
-      <button onClick={handleLogout}>Logout</button>
+      <CryptoTable />
     </div>
   );
 }
