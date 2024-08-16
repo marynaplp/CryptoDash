@@ -6,7 +6,10 @@
   background-color: #333;
   color: white;
 }
-
+#root > div > header > div.nav-left > a{
+  color:white;
+  text-decoration:none;
+}
 .nav-left {
   flex: 1;
 }
