@@ -5,22 +5,25 @@ import './cryptotable.css';
 
 function CryptoTable() {
   const [cryptos, setCryptos] = useState([]);
-  const { user, setUser } = useContext(AuthContext);
+  const { user, setUser, setFavorites } = useContext(AuthContext);
 
   useEffect(() => {
     // Fetch cryptocurrency data from CoinGecko API
     fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd')
       .then(response => response.json())
-      .then(data => setCryptos(data))
+      .then(data => {
+        setCryptos(data);
+        setUser({ ...user, cryptos: data }); // Update user context with fetched cryptos
+      })
       .catch(error => console.error('Error fetching crypto data:', error));
   }, []);
 
   const handleFavorite = (crypto) => {
     const updatedFavorites = user.favorites.includes(crypto.id)
-      ? user.ffavorites.filter(fav => fav !== crypto.id)
+      ? user.favorites.filter(fav => fav !== crypto.id)
       : [...user.favorites, crypto.id];
 
-    setUser({ ...user, favorites: updatedFavorites });
+    setFavorites(updatedFavorites); // Use setFavorites to update both context and local storage
   };
 
   return (
@@ -61,4 +64,3 @@ function CryptoTable() {
 }
 
 export default CryptoTable;
-
