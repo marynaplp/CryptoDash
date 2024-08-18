@@ -1,25 +1,28 @@
 // File: src/components/Login.js
 import React, { useState, useContext } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import './login.css';
 
 function Login() {
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here (e.g., authenticate with a backend)
-    const userData = { username, email: `${username}@example.com`, password }; // Adding email for testing
-    login(userData);
-    navigate('/profile');
+    try {
+      await login(username);
+      navigate('/profile'); // Redirect to the profile page after successful login
+    } catch (err) {
+      setError('User not found or incorrect username.');
+    }
   };
 
   return (
     <div className="login-container">
+      <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Username:</label>
@@ -28,25 +31,14 @@ function Login() {
             id="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            required
           />
         </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
+        {error && <p className="error">{error}</p>}
         <button type="submit">Login</button>
       </form>
-      <p>
-        Don't have an account? <Link to="/signup">Sign Up</Link>
-      </p>
     </div>
   );
 }
 
 export default Login;
-

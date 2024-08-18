@@ -1,5 +1,6 @@
 // File: src/components/CryptoTable.js
 import React, { useState, useEffect, useContext } from 'react';
+import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import './cryptotable.css';
 
@@ -9,21 +10,40 @@ function CryptoTable() {
 
   useEffect(() => {
     // Fetch cryptocurrency data from CoinGecko API
-    fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd')
-      .then(response => response.json())
-      .then(data => {
-        setCryptos(data);
-        setUser({ ...user, cryptos: data }); // Update user context with fetched cryptos
-      })
-      .catch(error => console.error('Error fetching crypto data:', error));
-  }, []);
+    const fetchCryptos = async () => {
+      try {
+        const response = await axios.get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd');
+        setCryptos(response.data);
+        setUser(prevUser => ({
+          ...prevUser,
+          cryptos: response.data,
+        }));
+      } catch (error) {
+        console.error('Error fetching crypto data:', error);
+      }
+    };
 
-  const handleFavorite = (crypto) => {
-    const updatedFavorites = user.favorites.includes(crypto.id)
-      ? user.favorites.filter(fav => fav !== crypto.id)
-      : [...user.favorites, crypto.id];
+    fetchCryptos();
+  }, [setUser]);
 
-    setFavorites(updatedFavorites); // Use setFavorites to update both context and local storage
+  const handleFavorite = async (crypto) => {
+    const isFavorite = user.favorites.includes(crypto.id);
+    const action = isFavorite ? 'remove' : 'add';
+
+    try {
+      await axios.post(`http://localhost:5000/favorites/${user.username}`, {
+        cryptoId: crypto.id,
+        action,
+      });
+
+      const updatedFavorites = isFavorite
+        ? user.favorites.filter(fav => fav !== crypto.id)
+        : [...user.favorites, crypto.id];
+
+      setFavorites(updatedFavorites);
+    } catch (error) {
+      console.error(`Error updating favorites for ${crypto.name}:`, error);
+    }
   };
 
   return (

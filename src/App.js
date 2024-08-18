@@ -7,8 +7,7 @@ import CryptoList from './components/CryptoList';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Profile from './components/Profile';
-import FavoriteCryptos from './components/FavoriteCryptos'; 
-
+import FavoriteCryptos from './components/FavoriteCryptos';
 import './App.css';
 
 function App() {
@@ -22,8 +21,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-            <Route path="/favorites" element={<ProtectedRoute><FavoriteCryptos /></ProtectedRoute>} />  {/* Add this line */}
-
+            <Route path="/favorites" element={<ProtectedRoute><FavoriteCryptos /></ProtectedRoute>} />
           </Routes>
         </div>
       </Router>
