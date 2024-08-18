@@ -6,6 +6,7 @@ import './login.css';
 
 function Login() {
   const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -13,10 +14,11 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login(username);
+      // Call the login function with username and password
+      await login(username, password);
       navigate('/profile'); // Redirect to the profile page after successful login
     } catch (err) {
-      setError('User not found or incorrect username.');
+      setError('Invalid username or password.');
     }
   };
 
@@ -31,6 +33,16 @@ function Login() {
             id="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>

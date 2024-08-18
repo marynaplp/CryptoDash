@@ -1,41 +1,40 @@
-// File: src/context/AuthContext.js
-import React, { createContext, useState, useEffect } from 'react';
+import React, { useState, createContext } from 'react'; // Correct imports
 import axios from 'axios';
 
-export const AuthContext = createContext();
+export const AuthContext = createContext(); // Create the AuthContext
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null); // Initialize user state
 
-  // Function to handle user signup
   const signup = async (username, email, password) => {
     try {
-      const response = await axios.post('http://localhost:5000/users/signup', {
+      const response = await axios.post('http://localhost:5001/users/signup', {
         username,
         email,
         password,
       });
-      setUser(response.data);
+      setUser(response.data); // Set user data after signup
     } catch (error) {
       console.error('Signup error:', error);
-      throw error; // Rethrow error to handle it in the component
+      throw error; // Rethrow error to be handled by calling component
     }
   };
 
-  // Function to handle user login (fetch user data by username)
-  const login = async (username) => {
+  const login = async (username, password) => {
     try {
-      const response = await axios.get(`http://localhost:5000/users/${username}`);
-      setUser(response.data);
+      const response = await axios.post('http://localhost:5001/users/login', {
+        username,
+        password,
+      });
+      setUser(response.data); // Set user data after login
     } catch (error) {
       console.error('Login error:', error);
-      throw error; // Rethrow error to handle it in the component
+      throw error; // Rethrow error to be handled by calling component
     }
   };
 
-  // Function to log out the user
   const logout = () => {
-    setUser(null);
+    setUser(null); // Clear user data on logout
   };
 
   return (

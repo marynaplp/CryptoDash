@@ -1,4 +1,3 @@
-// File: server/controllers/userController.js
 
 // In-memory user store for simplicity
 const users = [];
@@ -18,6 +17,17 @@ exports.signup = (req, res) => {
 
   // Respond with the new user's data (excluding password for security)
   res.status(201).json({ username: newUser.username, email: newUser.email, favorites: newUser.favorites });
+};
+
+exports.login = (req, res) => {
+  const { username, password } = req.body;
+  const user = users.find(user => user.username === username && user.password === password);
+
+  if (user) {
+    res.json({ username: user.username, email: user.email, favorites: user.favorites });
+  } else {
+    res.status(401).json({ error: 'Invalid username or password' });
+  }
 };
 
 exports.getUser = (req, res) => {

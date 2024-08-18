@@ -1,8 +1,13 @@
+// File: server/routes/favoriteRoutes.js
 const express = require('express');
-const userController = require('../controllers/userController');
+const favoriteController = require('../controllers/favoriteController');
 const router = express.Router();
 
-router.post('/signup', userController.signup);
-router.get('/:username', userController.getUser);
+// Route for getting a user's favorite cryptocurrencies
+router.get('/:username', favoriteController.getFavorites);
+
+// Route for adding or removing a favorite cryptocurrency
+router.post('/:username', favoriteController.updateFavorite);
 
 module.exports = router;
+
